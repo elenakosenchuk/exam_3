@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/weather-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" class="pt-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form @submit.prevent="searchCity">
+                        <div class="row">
+                            <div class="col-5">
+                                <input type="text" v-model="q" class="form-control" placeholder="Search City">
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" class="pt-3">
+            <div class="card mb-4">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a :class="activeTab==1?'nav-link active':'nav-link'" @click="changeActiveTab(1)">Today</a>
+                    </li>
+                    <li class="nav-item">
+                        <a :class="activeTab==3?'nav-link active':'nav-link'" @click="changeActiveTab(3)">3
+                            Days</a>
+                    </li>
+                    <li class="nav-item">
+                        <a :class="activeTab==5?'nav-link active':'nav-link'" @click="changeActiveTab(5)">5
+                            Days</a>
+                    </li>
+                </ul>
+
+                <currentweather v-if="activeTab==1" :forecast="currentForecast"></currentweather>
+
+                <div v-if="activeTab==3" class="card-group">
+                    <oneofthree v-for="forecast in threeDaysForecast.list" :forecast="forecast"
+                        :city="threeDaysForecast.city"></oneofthree>
+                </div>
+
+                <div v-if="activeTab==5" class="card-group">
+                    <oneoffive v-for="forecast in fiveDaysForecast.list" :forecast="forecast"
+                        :city="threeDaysForecast.city">
+                    </oneoffive>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <template id="oneoffive">
+
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Accordion Item #1
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the
+                        collapse plugin adds the appropriate classes that we use to style each element. These classes
+                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
+                        does limit overflow.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Accordion Item #2
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
+                        collapse plugin adds the appropriate classes that we use to style each element. These classes
+                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
+                        does limit overflow.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Accordion Item #3
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
+                        collapse plugin adds the appropriate classes that we use to style each element. These classes
+                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
+                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
+                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
+                        does limit overflow.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="card">
+            <div class="card-header header_5 d-flex justify-content-between">
+                <div class="title_context">
+                    <div class="title">{{city.name}}</div>
+                    <div class="data">{{converttime(forecast.dt)}}</div>
+                    <div class="temperature">
+                        <temperature :temp="forecast.main.temp"></temperature>
+                    </div>
+                    <div class="feel_temperature">Feels like
+                        <temperature :temp="forecast.main.feels_like"></temperature>
+                    </div>
+                </div>
+                <div class="title_icon icon_for5">
+                    <weather_icon :curweather="forecast.weather[0]"></weather_icon>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><i class="wi wi-thermometer"></i></div>
+                            <div class="item_data">
+                                <temperature :temp="forecast.main.temp_min"></temperature> &#8260; <temperature
+                                    :temp="forecast.main.temp_max"></temperature>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><i class="wi wi-humidity"></i></div>
+                            <div class="item_data">{{forecast.main.humidity}}&#37;</div>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><i class="wi wi-barometer"></i></div>
+                            <div class="item_data">{{forecast.main.pressure}} mb</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><i class="wi wi-strong-wind"></i></div>
+                            <div class="item_data">{{forecast.wind.speed}} km &#8260; h</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><i class="wi wi-cloud"></i></div>
+                            <div class="item_data">{{forecast.clouds.all}}&#37;</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div class="item_name"><svg
+                                    class="WeatherDetailsListItem--icon--1k0UH Icon--icon--3wCKh Icon--darkTheme--3iVDF"
+                                    set="current-conditions" name="visibility" theme="dark" data-testid="Icon"
+                                    aria-hidden="true" role="img" width="15" height="15" viewBox="0 0 1024 1024">
+                                    <title>Visibility</title>
+                                    <path
+                                        d="M491.856 879.808c-60.48-5.056-110.848-25.184-171.328-55.424-120.96-55.424-216.704-146.112-292.256-256.96-25.248-40.352-30.24-80.64 0-126.016 80.608-115.872 186.464-211.68 317.472-272.096 110.816-50.4 226.752-50.4 337.664 0 136 60.48 241.824 156.224 317.44 282.208 15.104 25.216 25.12 65.504 10.048 85.728-105.792 191.424-256.992 367.84-519.04 342.56zm292.256-377.92c0-151.168-120.96-272.064-272.096-272.064-146.144 0-272.128 126.016-272.128 272.064 0 151.232 120.96 277.216 272.128 277.216 151.104-.032 272.096-125.984 272.096-277.216z">
+                                    </path>
+                                    <path
+                                        d="M789.808 500.416c0 156.896-125.472 287.52-282.336 282.336-156.864 0-282.336-130.656-282.336-287.488 0-146.4 130.656-277.12 282.336-277.12 156.896-.032 287.584 125.376 282.336 282.272zM512.752 348.832c-83.68 0-151.584 67.968-151.584 151.584 0 88.864 67.968 156.896 151.584 156.896 83.648 0 156.832-73.216 156.832-156.896-5.184-83.648-73.152-151.584-156.832-151.584z">
+                                    </path>
+                                </svg></div>
+                            <div class="item_data">{{forecast.visibility}} m</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+    </template>
+
+    <template id="oneofthree">
+        <div class="card">
+            <div class="card-header header_5 d-flex justify-content-between">
+                <div class="title_context">
+                    <div class="title">{{city.name}}</div>
+                    <div class="data">{{converttime(forecast.dt)}}</div>
+                    <div class="temperature">
+                        <temperature :temp="forecast.main.temp"></temperature>
+                    </div>
+                    <div class="feel_temperature">Feels like
+                        <temperature :temp="forecast.main.feels_like"></temperature>
+                    </div>
+                </div>
+                <div class="title_icon">
+                    <weather_icon :curweather="forecast.weather[0]"></weather_icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-thermometer"></i> Low &#8260; High</div>
+                        <div class="item_data">
+                            <temperature :temp="forecast.main.temp_min"></temperature> &#8260; <temperature
+                                :temp="forecast.main.temp_max"></temperature>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-humidity"></i> Humidity</div>
+                        <div class="item_data">{{forecast.main.humidity}}&#37;</div>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-barometer"></i> Pressure</div>
+                        <div class="item_data">{{forecast.main.pressure}} mb</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-strong-wind"></i> Wind</div>
+                        <div class="item_data">{{forecast.wind.speed}} km &#8260; h</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-cloud"></i> Clouds</div>
+                        <div class="item_data">{{forecast.clouds.all}}&#37;</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><svg
+                                class="WeatherDetailsListItem--icon--1k0UH Icon--icon--3wCKh Icon--darkTheme--3iVDF"
+                                set="current-conditions" name="visibility" theme="dark" data-testid="Icon"
+                                aria-hidden="true" role="img" width="15" height="15" viewBox="0 0 1024 1024">
+                                <title>Visibility</title>
+                                <path
+                                    d="M491.856 879.808c-60.48-5.056-110.848-25.184-171.328-55.424-120.96-55.424-216.704-146.112-292.256-256.96-25.248-40.352-30.24-80.64 0-126.016 80.608-115.872 186.464-211.68 317.472-272.096 110.816-50.4 226.752-50.4 337.664 0 136 60.48 241.824 156.224 317.44 282.208 15.104 25.216 25.12 65.504 10.048 85.728-105.792 191.424-256.992 367.84-519.04 342.56zm292.256-377.92c0-151.168-120.96-272.064-272.096-272.064-146.144 0-272.128 126.016-272.128 272.064 0 151.232 120.96 277.216 272.128 277.216 151.104-.032 272.096-125.984 272.096-277.216z">
+                                </path>
+                                <path
+                                    d="M789.808 500.416c0 156.896-125.472 287.52-282.336 282.336-156.864 0-282.336-130.656-282.336-287.488 0-146.4 130.656-277.12 282.336-277.12 156.896-.032 287.584 125.376 282.336 282.272zM512.752 348.832c-83.68 0-151.584 67.968-151.584 151.584 0 88.864 67.968 156.896 151.584 156.896 83.648 0 156.832-73.216 156.832-156.896-5.184-83.648-73.152-151.584-156.832-151.584z">
+                                </path>
+                            </svg> Visibility</div>
+                        <div class="item_data">{{forecast.visibility}} m</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+
+    <template id="temperature">
+        <span>{{f2c(temp)}}&deg;C</span>
+    </template>
+
+    <template id="weather_icon">
+        <i :class="getclass(curweather.main)"></i>
+    </template>
+
+    <template id="currentweather">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="title_context">
+                    <div class="title">Weather Today in {{forecast.name}}, {{forecast.sys.country}}</div>
+                    <div class="temperature">
+                        <temperature :temp="forecast.main.temp"></temperature>
+                    </div>
+                    <div class="feel_temperature">Feels like
+                        <temperature :temp="forecast.main.feels_like"></temperature>
+                    </div>
+                </div>
+                <div class="title_icon">
+                    <weather_icon :curweather="forecast.weather[0]"></weather_icon>
+                </div>
+            </div>
+            <div class="card-body d-flex">
+                <ul class="list-group list-group-flush w-50 p-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-thermometer"></i> Low &#8260; High</div>
+                        <div class="item_data">
+                            <temperature :temp="forecast.main.temp_min"></temperature> &#8260; <temperature
+                                :temp="forecast.main.temp_max"></temperature>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-humidity"></i> Humidity</div>
+                        <div class="item_data">{{forecast.main.humidity}}&#37;</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-barometer"></i> Pressure</div>
+                        <div class="item_data">{{forecast.main.pressure}} mb</div>
+                    </li>
+                </ul>
+                <ul class="list-group list-group-flush w-50 p-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-strong-wind"></i> Wind</div>
+                        <div class="item_data">{{forecast.wind.speed}} km &#8260; h</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><i class="wi wi-cloud"></i> Clouds</div>
+                        <div class="item_data">{{forecast.clouds.all}}&#37;</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="item_name"><svg
+                                class="WeatherDetailsListItem--icon--1k0UH Icon--icon--3wCKh Icon--darkTheme--3iVDF"
+                                set="current-conditions" name="visibility" theme="dark" data-testid="Icon"
+                                aria-hidden="true" role="img" width="15" height="15" viewBox="0 0 1024 1024">
+                                <title>Visibility</title>
+                                <path
+                                    d="M491.856 879.808c-60.48-5.056-110.848-25.184-171.328-55.424-120.96-55.424-216.704-146.112-292.256-256.96-25.248-40.352-30.24-80.64 0-126.016 80.608-115.872 186.464-211.68 317.472-272.096 110.816-50.4 226.752-50.4 337.664 0 136 60.48 241.824 156.224 317.44 282.208 15.104 25.216 25.12 65.504 10.048 85.728-105.792 191.424-256.992 367.84-519.04 342.56zm292.256-377.92c0-151.168-120.96-272.064-272.096-272.064-146.144 0-272.128 126.016-272.128 272.064 0 151.232 120.96 277.216 272.128 277.216 151.104-.032 272.096-125.984 272.096-277.216z">
+                                </path>
+                                <path
+                                    d="M789.808 500.416c0 156.896-125.472 287.52-282.336 282.336-156.864 0-282.336-130.656-282.336-287.488 0-146.4 130.656-277.12 282.336-277.12 156.896-.032 287.584 125.376 282.336 282.272zM512.752 348.832c-83.68 0-151.584 67.968-151.584 151.584 0 88.864 67.968 156.896 151.584 156.896 83.648 0 156.832-73.216 156.832-156.896-5.184-83.648-73.152-151.584-156.832-151.584z">
+                                </path>
+                            </svg> Visibility</div>
+                        <div class="item_data">{{forecast.visibility}} m</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/axios.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+
+
+</html>
