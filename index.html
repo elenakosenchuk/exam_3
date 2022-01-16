@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/weather-icons.min.css">
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="stylesheet" href="assets/css/responsive.min.css">
 </head>
 
 <body>
@@ -48,7 +49,7 @@
 
                 <currentweather v-if="activeTab==1" :forecast="currentForecast"></currentweather>
 
-                <div v-if="activeTab==3" class="card-group">
+                <div v-if="activeTab==3" class="card">
                     <oneofthree v-for="forecast in threeDaysForecast.list" :forecast="forecast"
                         :city="threeDaysForecast.city"></oneofthree>
                 </div>
@@ -68,12 +69,16 @@
     <template id="oneoffive">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" @click="accordeonOnOff()"
-                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <div class="data">{{city.name}} {{converttime(forecast.dt)}}</div>
+                <div class="accirdion_context">
+                    <div>{{city.name}}</div>
+                    <div>{{converttime(forecast.dt)}}</div>
                     <div class="title_icon">
                         <weather_icon :curweather="forecast.weather[0]"></weather_icon>
                     </div>
+                </div>
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" @click="accordeonOnOff()"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
                 </button>
             </h2>
             <div v-show="!collapsed" id="collapseOne" class="accordion-collapse collapse show"
@@ -126,7 +131,7 @@
 
     <template id="oneofthree">
         <div class="card">
-            <div class="card-header header_5 d-flex justify-content-between">
+            <div class="card-header">
                 <div class="title_context">
                     <div class="title">{{city.name}}</div>
                     <div class="data">{{converttime(forecast.dt)}}</div>
@@ -141,6 +146,7 @@
                     <weather_icon :curweather="forecast.weather[0]"></weather_icon>
                 </div>
             </div>
+
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between">
@@ -196,9 +202,9 @@
 
     <template id="currentweather">
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header">
                 <div class="title_context">
-                    <div class="title">Weather Today in {{forecast.name}}, {{forecast.sys.country}}</div>
+                    <div class="title">Weather Today in {{forecast.name}}</div>
                     <div class="temperature">
                         <temperature :temp="forecast.main.temp"></temperature>
                     </div>
@@ -210,8 +216,9 @@
                     <weather_icon :curweather="forecast.weather[0]"></weather_icon>
                 </div>
             </div>
-            <div class="card-body d-flex">
-                <ul class="list-group list-group-flush w-50 p-3">
+
+            <div class="card-body">
+                <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between">
                         <div class="item_name"><i class="wi wi-thermometer"></i> Low &#8260; High</div>
                         <div class="item_data">
@@ -226,8 +233,6 @@
                         <div class="item_name"><i class="wi wi-barometer"></i> Pressure</div>
                         <div class="item_data">{{forecast.main.pressure}} mb</div>
                     </li>
-                </ul>
-                <ul class="list-group list-group-flush w-50 p-3">
                     <li class="list-group-item d-flex justify-content-between">
                         <div class="item_name"><i class="wi wi-strong-wind"></i> Wind</div>
                         <div class="item_data">{{forecast.wind.speed}} km &#8260; h</div>
@@ -252,6 +257,7 @@
                         <div class="item_data">{{forecast.visibility}} m</div>
                     </li>
                 </ul>
+
             </div>
         </div>
     </template>

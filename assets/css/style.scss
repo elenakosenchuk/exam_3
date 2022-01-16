@@ -72,6 +72,9 @@ img {
         }
     }
     .card-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
         padding: 15px;
         color: #fff;
         background-color: rgba(103, 93, 103, 1);
@@ -90,14 +93,7 @@ img {
             margin-bottom: 10px;
         }
     }
-    .header_5{
-        @include fz(18);
-        line-height: 21px;
-        letter-spacing: 0;
-        .temperature{
-            @include fz(32);            
-        }
-    }
+    
     .title_icon{
         width: 30%;
         text-align: center;
@@ -142,4 +138,19 @@ img {
     @include fz(20);
     line-height: 24px;
     letter-spacing: 1px;
+}
+.accordion-button:not(.collapsed)::after{
+    transform: rotate(0deg);
+}
+.accirdion_context{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    padding: 15px;
+    color: #fff;
+    background-color: rgba(103, 93, 103, 1);
+    font-weight: 700;
+    @include fz(24);
+    line-height: 30px;
+    letter-spacing: .6px;                
 }

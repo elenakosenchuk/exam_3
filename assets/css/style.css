@@ -70,6 +70,9 @@ img {
   letter-spacing: 1px;
 }
 .card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
   padding: 15px;
   color: #fff;
   background-color: #675d67;
@@ -87,14 +90,6 @@ img {
 .card .card-header .temperature {
   font-size: 2.5rem;
   margin-bottom: 10px;
-}
-.card .header_5 {
-  font-size: 1.125rem;
-  line-height: 21px;
-  letter-spacing: 0;
-}
-.card .header_5 .temperature {
-  font-size: 2rem;
 }
 .card .title_icon {
   width: 30%;
@@ -133,4 +128,21 @@ img {
   font-size: 1.25rem;
   line-height: 24px;
   letter-spacing: 1px;
+}
+
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(0deg);
+}
+
+.accirdion_context {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  color: #fff;
+  background-color: #675d67;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 30px;
+  letter-spacing: 0.6px;
 }
