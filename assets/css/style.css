@@ -125,3 +125,12 @@ img {
 .wi, svg {
   margin-right: 10px;
 }
+
+.accordion-button:not(.collapsed) {
+  background-color: #FAF0E6;
+  color: #421556;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 24px;
+  letter-spacing: 1px;
+}

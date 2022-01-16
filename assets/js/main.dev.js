@@ -11,7 +11,17 @@ var time_mixin = {
 };
 Vue.component('oneoffive', {
   mixins: [time_mixin],
+  data: function data() {
+    return {
+      collapsed: true
+    };
+  },
   props: ['forecast', 'city'],
+  methods: {
+    accordeonOnOff: function accordeonOnOff() {
+      this.collapsed = !this.collapsed;
+    }
+  },
   template: '#oneoffive'
 });
 Vue.component('weather_icon', {

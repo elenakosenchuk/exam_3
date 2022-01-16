@@ -11,7 +11,16 @@ var time_mixin = {
 
 Vue.component('oneoffive',{
     mixins: [time_mixin],
+    data:function () {
+        return {
+        collapsed:true
+    }},
     props:['forecast', 'city'],
+    methods:{
+        accordeonOnOff:function(){            
+            this.collapsed = !this.collapsed;
+        }
+    },
     template:'#oneoffive',
 });
 

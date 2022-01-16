@@ -53,10 +53,12 @@
                         :city="threeDaysForecast.city"></oneofthree>
                 </div>
 
-                <div v-if="activeTab==5" class="card-group">
-                    <oneoffive v-for="forecast in fiveDaysForecast.list" :forecast="forecast"
-                        :city="threeDaysForecast.city">
-                    </oneoffive>
+                <div v-if="activeTab==5" class="card">
+                    <div class="accordion" id="accordionExample">
+                        <oneoffive v-for="forecast in fiveDaysForecast.list" :forecast="forecast"
+                            :city="fiveDaysForecast.city">
+                        </oneoffive>
+                    </div>
                 </div>
 
             </div>
@@ -64,108 +66,41 @@
 
     </div>
     <template id="oneoffive">
-
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Accordion Item #1
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                        does limit overflow.
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" @click="accordeonOnOff()"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <div class="data">{{city.name}} {{converttime(forecast.dt)}}</div>
+                    <div class="title_icon">
+                        <weather_icon :curweather="forecast.weather[0]"></weather_icon>
                     </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Accordion Item #2
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                        does limit overflow.
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Accordion Item #3
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the
-                        collapse plugin adds the appropriate classes that we use to style each element. These classes
-                        control the overall appearance, as well as the showing and hiding via CSS transitions. You can
-                        modify any of this with custom CSS or overriding our default variables. It's also worth noting
-                        that just about any HTML can go within the <code>.accordion-body</code>, though the transition
-                        does limit overflow.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- <div class="card">
-            <div class="card-header header_5 d-flex justify-content-between">
-                <div class="title_context">
-                    <div class="title">{{city.name}}</div>
-                    <div class="data">{{converttime(forecast.dt)}}</div>
-                    <div class="temperature">
-                        <temperature :temp="forecast.main.temp"></temperature>
-                    </div>
-                    <div class="feel_temperature">Feels like
-                        <temperature :temp="forecast.main.feels_like"></temperature>
-                    </div>
-                </div>
-                <div class="title_icon icon_for5">
-                    <weather_icon :curweather="forecast.weather[0]"></weather_icon>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div class="card-body">
+                </button>
+            </h2>
+            <div v-show="!collapsed" id="collapseOne" class="accordion-collapse collapse show"
+                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between">
-                            <div class="item_name"><i class="wi wi-thermometer"></i></div>
+                            <div class="item_name"><i class="wi wi-thermometer"></i> Low &#8260; High</div>
                             <div class="item_data">
                                 <temperature :temp="forecast.main.temp_min"></temperature> &#8260; <temperature
                                     :temp="forecast.main.temp_max"></temperature>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <div class="item_name"><i class="wi wi-humidity"></i></div>
+                            <div class="item_name"><i class="wi wi-humidity"></i> Humidity</div>
                             <div class="item_data">{{forecast.main.humidity}}&#37;</div>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between">
-                            <div class="item_name"><i class="wi wi-barometer"></i></div>
+                            <div class="item_name"><i class="wi wi-barometer"></i> Pressure</div>
                             <div class="item_data">{{forecast.main.pressure}} mb</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <div class="item_name"><i class="wi wi-strong-wind"></i></div>
+                            <div class="item_name"><i class="wi wi-strong-wind"></i> Wind</div>
                             <div class="item_data">{{forecast.wind.speed}} km &#8260; h</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <div class="item_name"><i class="wi wi-cloud"></i></div>
+                            <div class="item_name"><i class="wi wi-cloud"></i> Clouds</div>
                             <div class="item_data">{{forecast.clouds.all}}&#37;</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
@@ -180,13 +115,13 @@
                                     <path
                                         d="M789.808 500.416c0 156.896-125.472 287.52-282.336 282.336-156.864 0-282.336-130.656-282.336-287.488 0-146.4 130.656-277.12 282.336-277.12 156.896-.032 287.584 125.376 282.336 282.272zM512.752 348.832c-83.68 0-151.584 67.968-151.584 151.584 0 88.864 67.968 156.896 151.584 156.896 83.648 0 156.832-73.216 156.832-156.896-5.184-83.648-73.152-151.584-156.832-151.584z">
                                     </path>
-                                </svg></div>
+                                </svg> Visibility</div>
                             <div class="item_data">{{forecast.visibility}} m</div>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div> -->
+        </div>
     </template>
 
     <template id="oneofthree">
